@@ -25,7 +25,7 @@ const StaffManagementPage = () => {
     const fetchStaff = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:8080/api/v1/staff', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/staff`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -48,8 +48,8 @@ const StaffManagementPage = () => {
     const handleSaveStaff = async (formData) => {
         const isEditing = !!editingStaff;
         const url = isEditing
-            ? `http://localhost:8080/api/v1/staff/${editingStaff.id}`
-            : `http://localhost:8080/api/v1/staff`;
+            ? `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/staff/${editingStaff.id}`
+            : `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/staff`;
 
         try {
             const res = await fetch(url, {
@@ -83,7 +83,7 @@ const StaffManagementPage = () => {
         if (!window.confirm('Are you sure you want to delete this staff member?')) return;
 
         try {
-            await fetch(`http://localhost:8080/api/v1/staff/${id}`, {
+            await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/staff/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

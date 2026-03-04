@@ -20,8 +20,8 @@ const POS = () => {
         const fetchMenuData = async () => {
             try {
                 const [catRes, itemRes] = await Promise.all([
-                    fetch('http://localhost:8080/api/v1/vendor/category', { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch('http://localhost:8080/api/v1/vendor/item', { headers: { 'Authorization': `Bearer ${token}` } })
+                    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/vendor/category`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/vendor/item`, { headers: { 'Authorization': `Bearer ${token}` } })
                 ]);
                 const catData = await catRes.json();
                 const itemData = await itemRes.json();
@@ -100,7 +100,7 @@ const POS = () => {
         };
 
         try {
-            const res = await fetch('http://localhost:8080/api/v1/orders', {
+            const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/orders`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

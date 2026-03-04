@@ -10,7 +10,7 @@ const SubscriptionPage = () => {
     useEffect(() => {
         const fetchSubscription = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/v1/subscription/current', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/subscription/current`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const data = await response.json();

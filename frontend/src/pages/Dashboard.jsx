@@ -10,7 +10,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchDashboard = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/v1/dashboard/summary', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/dashboard/summary`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const result = await response.json();

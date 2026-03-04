@@ -24,8 +24,8 @@ const MenuManagementPage = () => {
         setLoading(true);
         try {
             const [catRes, itemRes] = await Promise.all([
-                fetch('http://localhost:8080/api/v1/vendor/category', { headers: { 'Authorization': `Bearer ${token}` } }),
-                fetch('http://localhost:8080/api/v1/vendor/item', { headers: { 'Authorization': `Bearer ${token}` } })
+                fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/vendor/category`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/vendor/item`, { headers: { 'Authorization': `Bearer ${token}` } })
             ]);
             const catData = await catRes.json();
             const itemData = await itemRes.json();
@@ -40,8 +40,8 @@ const MenuManagementPage = () => {
     const handleSaveCategory = async (catData) => {
         const method = editingCategory ? 'PUT' : 'POST';
         const url = editingCategory
-            ? `http://localhost:8080/api/v1/vendor/category/${editingCategory.id}`
-            : `http://localhost:8080/api/v1/vendor/category`;
+            ? `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/vendor/category/${editingCategory.id}`
+            : `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/vendor/category`;
 
         try {
             const res = await fetch(url, {
@@ -66,7 +66,7 @@ const MenuManagementPage = () => {
     const handleDeleteCategory = async (id) => {
         if (!window.confirm('Are you sure you want to delete this category?')) return;
         try {
-            await fetch(`http://localhost:8080/api/v1/vendor/category/${id}`, {
+            await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/vendor/category/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -79,8 +79,8 @@ const MenuManagementPage = () => {
     const handleSaveItem = async (itemData) => {
         const method = editingItem ? 'PUT' : 'POST';
         const url = editingItem
-            ? `http://localhost:8080/api/v1/vendor/item/${editingItem.id}`
-            : `http://localhost:8080/api/v1/vendor/item`;
+            ? `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/vendor/item/${editingItem.id}`
+            : `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/vendor/item`;
 
         try {
             const res = await fetch(url, {
@@ -105,7 +105,7 @@ const MenuManagementPage = () => {
     const handleDeleteItem = async (id) => {
         if (!window.confirm('Are you sure you want to delete this item?')) return;
         try {
-            await fetch(`http://localhost:8080/api/v1/vendor/item/${id}`, {
+            await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/vendor/item/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

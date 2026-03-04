@@ -16,7 +16,7 @@ const OrderHistoryPage = () => {
     const fetchOrders = async () => {
         setLoading(true);
         try {
-            let url = `http://localhost:8080/api/v1/orders/history?page=${page}&size=10`;
+            let url = `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/v1/orders/history?page=${page}&size=10`;
             if (statusFilter !== 'ALL') url += `&status=${statusFilter}`;
             if (dateFilter) {
                 url += `&startDate=${dateFilter}&endDate=${dateFilter}`;
