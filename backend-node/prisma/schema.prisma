@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id        Int      @id @default(autoincrement())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  domain    String   @unique
+  name      String
+
+  users         User[]
+  categories    Category[]
+  customers     Customer[]
+  items         Item[]
+  orders        Order[]
+  payments      Payment[]
+  subscriptions Subscription[]
+
+  @@map("tenants")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  email     String   @unique
+  name      String
+  password  String
+  role      String   // ADMIN, BILLING, KITCHEN
+  tenantId  Int      @map("tenant_id")
+
+  tenant Tenant  @relation(fields: [tenantId], references: [id])
+  orders Order[]
+
+  @@map("users")
+}
+
+model Category {
+  id       Int     @id @default(autoincrement())
+  active   Boolean @default(true)
+  name     String
+  tenantId Int     @map("tenant_id")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  items  Item[]
+
+  @@map("categories")
+}
+
+model Item {
+  id            Int     @id @default(autoincrement())
+  active        Boolean @default(true)
+  description   String?
+  imageUrl      String? @map("image_url")
+  name          String
+  price         Float
+  stockQuantity Int?    @map("stock_quantity")
+  trackStock    Boolean @default(false) @map("track_stock")
+  categoryId    Int?    @map("category_id")
+  tenantId      Int     @map("tenant_id")
+
+  category   Category?   @relation(fields: [categoryId], references: [id])
+  tenant     Tenant      @relation(fields: [tenantId], references: [id])
+  orderItems OrderItem[]
+
+  @@map("items")
+}
+
+model Customer {
+  id            Int     @id @default(autoincrement())
+  loyaltyPoints Int?    @map("loyalty_points")
+  name          String
+  phone         String?
+  tenantId      Int     @map("tenant_id")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@map("customers")
+}
+
+model Order {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now()) @map("created_at")
+  discountAmount Float?    @map("discount_amount")
+  paymentMethod  String    @map("payment_method")
+  status         String
+  subtotal       Float?
+  taxAmount      Float?    @map("tax_amount")
+  tokenNumber    String    @map("token_number")
+  totalAmount    Float     @map("total_amount")
+  tenantId       Int       @map("tenant_id")
+  userId         Int       @map("user_id")
+  customerName   String?   @map("customer_name")
+  customerPhone  String?   @map("customer_phone")
+
+  tenant     Tenant      @relation(fields: [tenantId], references: [id])
+  user       User        @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+  payments   Payment[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         Int   @id @default(autoincrement())
+  quantity   Int
+  totalPrice Float @map("total_price")
+  unitPrice  Float @map("unit_price")
+  itemId     Int   @map("item_id")
+  orderId    Int   @map("order_id")
+
+  item  Item  @relation(fields: [itemId], references: [id])
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("order_items")
+}
+
+model Payment {
+  id                Int       @id @default(autoincrement())
+  amount            Float
+  createdAt         DateTime? @default(now()) @map("created_at")
+  currency          String
+  razorpayOrderId   String?   @unique @map("razorpay_order_id")
+  razorpayPaymentId String?   @map("razorpay_payment_id")
+  status            String
+  updatedAt         DateTime? @map("updated_at")
+  orderId           Int       @map("order_id")
+  tenantId          Int       @map("tenant_id")
+
+  order  Order  @relation(fields: [orderId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId], name: "idx_payment_tenant")
+  @@index([razorpayOrderId], name: "idx_payment_razorpay_order")
+  @@index([status], name: "idx_payment_status")
+  @@map("payments")
+}
+
+model Subscription {
+  id        Int       @id @default(autoincrement())
+  endDate   DateTime? @map("end_date")
+  planType  String    @map("plan_type")
+  startDate DateTime  @map("start_date")
+  status    String
+  tenantId  Int       @map("tenant_id")
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@map("subscriptions")
+}
