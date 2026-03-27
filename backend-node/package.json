@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "npx prisma@6.3.1 generate"
+    "build": "npx prisma@6.3.1 generate",
+    "postbuild": "npx prisma@6.3.1 db push --accept-data-loss"
   },
   "keywords": [],
   "author": "",
