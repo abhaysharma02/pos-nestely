@@ -140,7 +140,7 @@ const OrderHistoryPage = () => {
                                         <tr key={order.id} className="hover:bg-[#1a1a1a] light:hover:bg-gray-50 transition-colors group cursor-default">
                                             <td className="px-6 py-5">
                                                 <div className="font-black text-white light:text-gray-900 group-hover:text-orange-400 transition-colors">#{order.tokenNumber}</div>
-                                                <div className="text-[11px] font-bold text-neutral-600 light:text-gray-400 mt-1 uppercase tracking-wider">ID: {order.id.slice(0, 8)}...</div>
+                                                <div className="text-[11px] font-bold text-neutral-600 light:text-gray-400 mt-1 uppercase tracking-wider">ID: {String(order.id).slice(0, 8)}...</div>
                                             </td>
                                             <td className="px-6 py-5">
                                                 <div className="font-medium text-neutral-200 light:text-gray-800">{new Date(order.createdAt).toLocaleDateString()}</div>

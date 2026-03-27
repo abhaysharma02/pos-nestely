@@ -188,7 +188,7 @@ const MenuManagementPage = () => {
                                             </div>
                                         </div>
                                         <div className="z-10 mt-auto pt-4 border-t border-[#2a2a2a] light:border-gray-100">
-                                            <p className="text-xs font-bold text-neutral-500 light:text-gray-500 uppercase tracking-widest text-right">Category ID: {cat.id.slice(0, 6)}</p>
+                                            <p className="text-xs font-bold text-neutral-500 light:text-gray-500 uppercase tracking-widest text-right">Category ID: {String(cat.id).slice(0, 6)}</p>
                                         </div>
                                     </div>
                                 ))}
